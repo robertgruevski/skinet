@@ -24,4 +24,31 @@ public class SpecificationEvaluator<T> where T : BaseEntity
 
         return query;
     }
+
+    public static IQueryable<TResult> GetQuery<TSpec, TResult>(IQueryable<T> query, ISpecification<T, TResult> spec)
+    {
+        if (spec.Criteria is not null)
+        {
+            query = query.Where(spec.Criteria);
+        }
+
+        if (spec.OrderBy is not null)
+        {
+            query = query.OrderBy(spec.OrderBy);
+        }
+
+        if (spec.OrderByDescending is not null)
+        {
+            query = query.OrderByDescending(spec.OrderByDescending);
+        }
+
+        var selectQuery = query as IQueryable<TResult>;
+
+        if (spec.Select is not null)
+        {
+            selectQuery = query.Select(spec.Select);
+        }
+
+        return selectQuery ?? query.Cast<TResult>();
+    }
 }
