@@ -74,15 +74,17 @@ public class ProductsController(IGenericRepository<Product> repository) : Contro
     [HttpGet("brands")]
     public async Task<ActionResult<IReadOnlyList<string>>> GetBrands()
     {
-        // TODO: Implement method
-        return Ok();
+        var spec = new BrandListSpecification();
+
+        return Ok(await repository.ListAsync(spec));
     }
 
     [HttpGet("types")]
     public async Task<ActionResult<IReadOnlyList<string>>> GetTypes()
     {
-        // TODO: Implement method
-        return Ok();
+        var spec = new TypeListSpecification();
+
+        return Ok(await repository.ListAsync(spec));
     }
 
     private bool ProductExists(int id) => repository.Exists(id);
