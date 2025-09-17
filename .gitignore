@@ -491,3 +491,5 @@ Infrastructure/obj
 Infrastructure/bin
 Core/obj/Debug/net10.0/Core.AssemblyInfo.cs
 Core/obj/Debug/net10.0/Core.AssemblyInfoInputs.cache
+API/appsettings.json
+API/appsettings.Development.json
