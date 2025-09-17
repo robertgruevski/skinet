@@ -4,7 +4,7 @@ import { MatStepperModule } from '@angular/material/stepper';
 import { MatButton } from '@angular/material/button';
 import { RouterLink } from '@angular/router';
 import { StripeService } from '../../core/services/stripe.service';
-import { StripeAddressElement } from '@stripe/stripe-js';
+import { StripeAddressElement, StripePaymentElement } from '@stripe/stripe-js';
 import { SnackbarService } from '../../core/services/snackbar.service';
 import { MatCheckboxChange, MatCheckboxModule } from '@angular/material/checkbox';
 import { StepperSelectionEvent } from '@angular/cdk/stepper';
@@ -32,6 +32,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
   private accountService = inject(AccountService);
 
   addressElement?: StripeAddressElement;
+  paymentElement?: StripePaymentElement;
   saveAddress = false;
 
   async ngOnInit() {
@@ -39,6 +40,9 @@ export class CheckoutComponent implements OnInit, OnDestroy {
       this.addressElement = await this.stripeService.createAddressElement();
 
       this.addressElement.mount('#address-element');
+
+      this.paymentElement = await this.stripeService.createPaymentElement();
+      this.paymentElement.mount('#payment-element');
     } catch (error: any) {
       this.snackBar.error(error.message);
     }
