@@ -12,6 +12,9 @@ import { Address } from '../../shared/models/User';
 import { firstValueFrom } from 'rxjs';
 import { AccountService } from '../../core/services/account.service';
 import { CheckoutDeliveryComponent } from './checkout-delivery/checkout-delivery.component';
+import { CheckoutReviewComponent } from './checkout-review/checkout-review.component';
+import { CartService } from '../../core/services/cart.service';
+import { CurrencyPipe } from '@angular/common';
 
 @Component({
   selector: 'app-checkout',
@@ -22,6 +25,8 @@ import { CheckoutDeliveryComponent } from './checkout-delivery/checkout-delivery
     MatButton,
     MatCheckboxModule,
     CheckoutDeliveryComponent,
+    CheckoutReviewComponent,
+    CurrencyPipe,
   ],
   templateUrl: './checkout.component.html',
   styleUrl: './checkout.component.scss',
@@ -30,6 +35,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
   private stripeService = inject(StripeService);
   private snackBar = inject(SnackbarService);
   private accountService = inject(AccountService);
+  cartService = inject(CartService);
 
   addressElement?: StripeAddressElement;
   paymentElement?: StripePaymentElement;
@@ -38,7 +44,6 @@ export class CheckoutComponent implements OnInit, OnDestroy {
   async ngOnInit() {
     try {
       this.addressElement = await this.stripeService.createAddressElement();
-
       this.addressElement.mount('#address-element');
 
       this.paymentElement = await this.stripeService.createPaymentElement();
