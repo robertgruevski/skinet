@@ -17,7 +17,7 @@ public class GenericRepository<T>(StoreContext context) : IGenericRepository<T> 
         var query = context.Set<T>().AsQueryable();
 
         query = spec.ApplyCriteria(query);
-        
+
         return await query.CountAsync();
     }
 
@@ -59,11 +59,6 @@ public class GenericRepository<T>(StoreContext context) : IGenericRepository<T> 
     public void Remove(T entity)
     {
         context.Set<T>().Remove(entity);
-    }
-
-    public async Task<bool> SaveAllAsync()
-    {
-        return await context.SaveChangesAsync() > 0;
     }
 
     public void Update(T entity)
