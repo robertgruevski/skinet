@@ -38,7 +38,8 @@
                 <div id="payment-element">
                     <div class="flex justify-between mt-6">
                         <button matStepperPrevious mat-stroked-button>Back</button>
-                        <button matStepperNext mat-flat-button>Pay {{cartService.totals()?.total | currency}}</button>
+                        <button (click)="confirmPayment(stepper)" matStepperNext mat-flat-button>Pay
+                            {{cartService.totals()?.total | currency}}</button>
                     </div>
                 </div>
             </mat-step>
