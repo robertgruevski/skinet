@@ -4,10 +4,25 @@
             class="absolute inset-0 w-full h-full object-cover rounded-2xl">
         <div class="flex flex-col p-8 rounded-2xl items-center relative">
             <h1 class="my-6 font-extrabold text-white text-6xl">Welcome to SkiNet!</h1>
-            <button
-                class="bg-gradient-to-r from-blue-600 to-cyan-500 font-semibold text-2xl text-white rounded-2xl px-8 py-4 border-2 border-transparent mt-8"
-                routerLink="/shop">
-                Go to shop
+            <button mat-stroked-button routerLink="/shop" class="relative group
+                   w-64 h-16 sm:w-80 sm:h-20
+                   bg-sky-600 rounded-full
+                   transform rotate-3
+                   shadow-2xl hover:shadow-sky-500
+                   transition-all duration-300 ease-in-out
+                   hover:scale-105 hover:-rotate-6
+                   overflow-hidden
+                   flex items-center justify-center
+                   border-4 border-sky-700
+                   focus:outline-none focus:shadow-none">
+
+                <div
+                    class="absolute inset-0 bg-gradient-to-r from-blue-950 via-sky-800 to-blue-950 rounded-full transform scale-90">
+                </div>
+
+                <span class="relative z-10 text-white text-xl sm:text-2xl font-extrabold tracking-widest uppercase">
+                    Go to shop
+                </span>
             </button>
         </div>
     </div>
