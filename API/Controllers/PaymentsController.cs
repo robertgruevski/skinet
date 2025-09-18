@@ -8,9 +8,9 @@ using Stripe;
 
 namespace API.Controllers;
 
-public class PaymentsController(IPaymentService paymentService, IUnitOfWork unit, ILogger<PaymentsController> logger) : BaseApiController
+public class PaymentsController(IPaymentService paymentService, IUnitOfWork unit, ILogger<PaymentsController> logger, IConfiguration config) : BaseApiController
 {
-    private readonly string _whSecret = "";
+    private readonly string _whSecret = config["StripeSettings:WhSecret"]!;
 
     [Authorize]
     [HttpPost("{cartId}")]
@@ -61,6 +61,20 @@ public class PaymentsController(IPaymentService paymentService, IUnitOfWork unit
         }
     }
 
+    private Event ConstructStripeEvent(string json)
+    {
+        try
+        {
+            return EventUtility.ConstructEvent(json, Request.Headers["Stripe-Signature"], _whSecret);
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "Failed to construct stripe event");
+
+            throw new StripeException("Invalid signature");
+        }
+    }
+
     private async Task HandlePaymentIntentSucceeded(PaymentIntent intent)
     {
         if (intent.Status == "succeeded")
@@ -81,20 +95,6 @@ public class PaymentsController(IPaymentService paymentService, IUnitOfWork unit
             await unit.Complete();
 
             // TODO: SignalR
-        }
-    }
-
-    private Event ConstructStripeEvent(string json)
-    {
-        try
-        {
-            return EventUtility.ConstructEvent(json, Request.Headers["Stripe-Signature"], _whSecret);
-        }
-        catch (Exception ex)
-        {
-            logger.LogError(ex, "Failed to construct stripe event");
-
-            throw new StripeException("Invalid signature");
         }
     }
 }
