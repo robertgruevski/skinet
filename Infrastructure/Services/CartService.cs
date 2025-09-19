@@ -1,4 +1,3 @@
-using System.Text;
 using System.Text.Json;
 using Core.Entities;
 using Core.Interfaces;
@@ -18,7 +17,9 @@ public class CartService(IConnectionMultiplexer redis) : ICartService
     {
         var data = await _database.StringGetAsync(key);
 
-        return data.IsNullOrEmpty ? null : JsonSerializer.Deserialize<ShoppingCart>(utf8Json: data);
+        MemoryStream stream = new(data!);
+
+        return data.IsNullOrEmpty ? null : JsonSerializer.Deserialize<ShoppingCart>(utf8Json: stream);
     }
 
     public async Task<ShoppingCart?> SetCartAsync(ShoppingCart cart)
