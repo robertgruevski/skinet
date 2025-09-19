@@ -3,12 +3,13 @@ import { inject, Injectable } from '@angular/core';
 import { Pagination } from '../../shared/models/Pagination';
 import { Product } from '../../shared/models/Product';
 import { ShopParams } from '../../shared/models/ShopParams';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ShopService {
-  baseUrl = 'https://localhost:5001/api/';
+  baseUrl = environment.apiUrl;
 
   private http = inject(HttpClient);
 
@@ -30,7 +31,7 @@ export class ShopService {
       params = params.append('sort', shopParams.sort);
     }
 
-    if(shopParams.search) {
+    if (shopParams.search) {
       params = params.append('search', shopParams.search);
     }
 
@@ -41,7 +42,7 @@ export class ShopService {
   }
 
   getProduct(id: number) {
-    return this.http.get<Product>(this.baseUrl + 'products/' + id)
+    return this.http.get<Product>(this.baseUrl + 'products/' + id);
   }
 
   getBrands() {
